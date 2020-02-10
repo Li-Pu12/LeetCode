@@ -1,0 +1,9 @@
+{
+  "name": "leetcode",
+  "version": "1.0.0",
+  "description": "leetcode question practice",
+  "main": "src/index.ts",
+  "repository": "https://github.com/Li-Pu12/LeetCode.git",
+  "author": "Li Pu <825369365@qq.com>",
+  "license": "MIT"
+}
