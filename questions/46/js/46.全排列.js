@@ -1,31 +1,18 @@
 /**
  * @param {number[]} nums
  * @return {number[][]}
- * time: 108ms 39.2MB
+ * time: 88ms space:38.9MB
  */
-var permute = function(nums) {
-    let len = nums.length;
-    let isToken = Array(len).fill(false);
+var permute = function (nums) {
     let res = [];
-    const genArray = function (index, arr) {
-        let i = 0;
-        while (i !== len) {
-            if (isToken[i] === false) {
-                isToken[i] = true;
-                if (index + 1 === len) {
-                    res.push([...arr, nums[i]]);
-                    isToken[i] = false;
-                    break;
-                }else {
-                    genArray(index + 1, [...arr, nums[i]]);
-                    isToken[i] = false;
-                }
-            }
-            i++;
+    const genArray = function (rest, arr) {
+        if (!rest.length) return res.push(arr);
+        for (let i = 0; i < rest.length; i++) {
+            let cl = [...rest];
+            cl.splice(i, 1);
+            genArray(cl, [...arr, rest[i]]);
         }
-    }
-
-    genArray(0, []);
-
+    };
+    genArray(nums, []);
     return res;
 };
