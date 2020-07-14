@@ -1,5 +1,7 @@
 import bubleSort from './bubleSort';
+import shellSort from './shellSort'
 
 export default {
-    bubleSort
+    bubleSort,
+    shellSort,
 }
