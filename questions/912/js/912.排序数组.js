@@ -1,25 +1,19 @@
 /**
  * @param {number[]} nums
  * @return {number[]}
- * time: 1168ms space: 42.3MB
+ * time: 1788ms space: 42.4MB
  */
 var sortArray = function (nums) {
-    // 选择排序
-    let t;
+    // 插入排序
     for (let i = 0; i < nums.length; i++) {
-        t = nums.length - 1;
-        for (let j = nums.length - 2; j > i; j--) {
-            if (nums[j] < nums[t]) {
-                t = j;
+        for (let j = i + 1; j > 0; j--) {
+            if (nums[j] < nums[j - 1]) {
+                let t = nums[j];
+                nums[j] = nums[j - 1];
+                nums[j - 1] = t;
+            } else {
+                break;
             }
-        }
-        if (nums[i] < nums[t]) {
-            i++;
-        }
-        if (nums[t] < nums[i]) {
-            let tt = nums[t];
-            nums[t] = nums[i];
-            nums[i] = tt;
         }
     }
     return nums;
