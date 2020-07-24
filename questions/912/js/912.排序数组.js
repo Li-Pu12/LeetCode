@@ -1,24 +1,35 @@
 /**
  * @param {number[]} nums
  * @return {number[]}
- * time: 144ms space: 42.5MB
+ * time: 100ms space: 42.9MB
  */
 var sortArray = function (nums) {
-    // 希尔排序
-    for (
-        let gap = Math.floor(nums.length / 2);
-        gap > 0;
-        gap = Math.floor(gap / 2)
-    ) {
-        for (let i = gap; i < nums.length; i++) {
-            let t = nums[i];
-            let j = i;
-            while (j - gap >= 0 && t < nums[j - gap]) {
-                nums[j] = nums[j - gap];
-                j -= gap;
+    // 快速排序
+    const quickSort = (start, end) => {
+        if (start >= end) return;
+        let t = nums[start];
+        let l = start,
+            r = end;
+        while (l < r) {
+            while (l < r && nums[r] > t) {
+                r--;
             }
-            nums[j] = t;
+            if (l < r) {
+                nums[l] = nums[r];
+                l++;
+            }
+            while (l < r && nums[l] < t) {
+                l++;
+            }
+            if (l < r) {
+                nums[r] = nums[l];
+                r--;
+            }
         }
-    }
+        nums[l] = t;
+        quickSort(start, l - 1);
+        quickSort(l + 1, end);
+    };
+    quickSort(0, nums.length - 1);
     return nums;
 };
