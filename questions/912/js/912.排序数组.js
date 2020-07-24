@@ -1,19 +1,23 @@
 /**
  * @param {number[]} nums
  * @return {number[]}
- * time: 1788ms space: 42.4MB
+ * time: 144ms space: 42.5MB
  */
 var sortArray = function (nums) {
-    // 插入排序
-    for (let i = 0; i < nums.length; i++) {
-        for (let j = i + 1; j > 0; j--) {
-            if (nums[j] < nums[j - 1]) {
-                let t = nums[j];
-                nums[j] = nums[j - 1];
-                nums[j - 1] = t;
-            } else {
-                break;
+    // 希尔排序
+    for (
+        let gap = Math.floor(nums.length / 2);
+        gap > 0;
+        gap = Math.floor(gap / 2)
+    ) {
+        for (let i = gap; i < nums.length; i++) {
+            let t = nums[i];
+            let j = i;
+            while (j - gap >= 0 && t < nums[j - gap]) {
+                nums[j] = nums[j - gap];
+                j -= gap;
             }
+            nums[j] = t;
         }
     }
     return nums;
