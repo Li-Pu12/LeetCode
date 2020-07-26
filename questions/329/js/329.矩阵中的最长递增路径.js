@@ -1,7 +1,7 @@
 /**
  * @param {number[][]} matrix
  * @return {number}
- * time: 132ms space: 41.6MB
+ * time: 112ms space: 41.5MB
  */
 var longestIncreasingPath = function (matrix) {
     if (matrix.length <= 0) return 0;
@@ -11,6 +11,7 @@ var longestIncreasingPath = function (matrix) {
     let max = 0;
     const search = (rowIndex, columnIndex) => {
         if (map[rowIndex][columnIndex] !== 0) return map[rowIndex][columnIndex];
+        map[rowIndex][columnIndex] = 1;
         if (
             rowIndex > 0 &&
             matrix[rowIndex - 1][columnIndex] > matrix[rowIndex][columnIndex] &&
@@ -46,5 +47,5 @@ var longestIncreasingPath = function (matrix) {
             max = Math.max(max, search(i, j));
         }
     }
-    return max + 1;
+    return max;
 };
