@@ -1,51 +1,91 @@
 /**
  * @param {number[][]} matrix
  * @return {number}
- * time: 112ms space: 41.5MB
+ * time: 284ms space: 44.6MB
  */
 var longestIncreasingPath = function (matrix) {
     if (matrix.length <= 0) return 0;
-    let map = Array(matrix.length)
+    let queue = Array(matrix.length)
         .fill(0)
-        .map(() => Array(matrix[0].length).fill(0));
+        .map(() => new Set());
+    let count = 0;
+    matrix.forEach((row, rowIndex) => {
+        row.forEach((value, columnIndex) => {
+            if (
+                rowIndex > 0 &&
+                matrix[rowIndex - 1][columnIndex] >
+                    matrix[rowIndex][columnIndex]
+            )
+                return;
+            if (
+                columnIndex > 0 &&
+                matrix[rowIndex][columnIndex - 1] >
+                    matrix[rowIndex][columnIndex]
+            )
+                return;
+            if (
+                rowIndex < matrix.length - 1 &&
+                matrix[rowIndex + 1][columnIndex] >
+                    matrix[rowIndex][columnIndex]
+            )
+                return;
+            if (
+                columnIndex < matrix[rowIndex].length - 1 &&
+                matrix[rowIndex][columnIndex + 1] >
+                    matrix[rowIndex][columnIndex]
+            )
+                return;
+            queue[rowIndex].add(columnIndex);
+            count++;
+        });
+    });
     let max = 0;
-    const search = (rowIndex, columnIndex) => {
-        if (map[rowIndex][columnIndex] !== 0) return map[rowIndex][columnIndex];
-        map[rowIndex][columnIndex] = 1;
-        if (
-            rowIndex > 0 &&
-            matrix[rowIndex - 1][columnIndex] > matrix[rowIndex][columnIndex] &&
-            search(rowIndex - 1, columnIndex) >= map[rowIndex][columnIndex]
-        ) {
-            map[rowIndex][columnIndex] = map[rowIndex - 1][columnIndex] + 1;
-        }
-        if (
-            columnIndex > 0 &&
-            matrix[rowIndex][columnIndex - 1] > matrix[rowIndex][columnIndex] &&
-            search(rowIndex, columnIndex - 1) >= map[rowIndex][columnIndex]
-        ) {
-            map[rowIndex][columnIndex] = map[rowIndex][columnIndex - 1] + 1;
-        }
-        if (
-            rowIndex < matrix.length - 1 &&
-            matrix[rowIndex + 1][columnIndex] > matrix[rowIndex][columnIndex] &&
-            search(rowIndex + 1,columnIndex) >= map[rowIndex][columnIndex]
-        ) {
-            map[rowIndex][columnIndex] = map[rowIndex + 1][columnIndex] + 1;
-        }
-        if (
-            columnIndex < matrix[rowIndex].length - 1 &&
-            matrix[rowIndex][columnIndex + 1] > matrix[rowIndex][columnIndex] &&
-            search(rowIndex, columnIndex + 1) >= map[rowIndex][columnIndex]
-        ) {
-            map[rowIndex][columnIndex] = map[rowIndex][columnIndex + 1] + 1;
-        }
-        return map[rowIndex][columnIndex];
-    }
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[i].length; j++) {
-            max = Math.max(max, search(i, j));
-        }
+    let tq = Array(matrix.length)
+        .fill(0)
+        .map(() => new Set());
+    while (count !== 0) {
+        count = 0;
+        queue.forEach((sets, rowIndex) =>
+            sets.forEach((columnIndex) => {
+                if (
+                    rowIndex > 0 &&
+                    matrix[rowIndex - 1][columnIndex] <
+                    matrix[rowIndex][columnIndex]
+                ) {
+                    tq[rowIndex - 1].add(columnIndex);
+                    count++;
+                }
+                if (
+                    columnIndex > 0 &&
+                    matrix[rowIndex][columnIndex - 1] <
+                    matrix[rowIndex][columnIndex]
+                ) {
+                    tq[rowIndex].add(columnIndex - 1);
+                    count++;
+                }
+                if (
+                    rowIndex < matrix.length - 1 &&
+                    matrix[rowIndex + 1][columnIndex] <
+                    matrix[rowIndex][columnIndex]
+                ) {
+                    tq[rowIndex + 1].add(columnIndex);
+                    count++;
+                }
+                if (
+                    columnIndex < matrix[rowIndex].length - 1 &&
+                    matrix[rowIndex][columnIndex + 1] <
+                    matrix[rowIndex][columnIndex]
+                ) {
+                    tq[rowIndex].add(columnIndex + 1);
+                    count++;
+                }
+            })
+        );
+        queue.map(set => set.clear());
+        let t = queue;
+        queue = tq;
+        tq = t;
+        max++;
     }
     return max;
 };
