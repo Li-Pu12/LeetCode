@@ -1,49 +1,50 @@
 /**
  * @param {number[][]} matrix
  * @return {number}
- * time: 244ms space: 40.5MB
+ * time: 132ms space: 41.6MB
  */
 var longestIncreasingPath = function (matrix) {
     if (matrix.length <= 0) return 0;
     let map = Array(matrix.length)
         .fill(0)
         .map(() => Array(matrix[0].length).fill(0));
-    let max = 0, count = 0;
-    while (max >= count) {
-        for (let i = 0; i < matrix.length; i++) {
-            for (let j = 0; j < matrix[i].length; j++) {
-                if (
-                    i > 0 &&
-                    matrix[i - 1][j] > matrix[i][j] &&
-                    map[i - 1][j] >= map[i][j]
-                ) {
-                    map[i][j] = map[i - 1][j] + 1;
-                }
-                if (
-                    j > 0 &&
-                    matrix[i][j - 1] > matrix[i][j] &&
-                    map[i][j - 1] >= map[i][j]
-                ) {
-                    map[i][j] = map[i][j - 1] + 1;
-                }
-                if (
-                    i < matrix.length - 1 &&
-                    matrix[i + 1][j] > matrix[i][j] &&
-                    map[i + 1][j] >= map[i][j]
-                ) {
-                    map[i][j] = map[i + 1][j] + 1;
-                }
-                if (
-                    j < matrix[i].length - 1 &&
-                    matrix[i][j + 1] > matrix[i][j] &&
-                    map[i][j + 1] >= map[i][j]
-                ) {
-                    map[i][j] = map[i][j + 1] + 1;
-                }
-                if (map[i][j] > max) max = map[i][j];
-            }
+    let max = 0;
+    const search = (rowIndex, columnIndex) => {
+        if (map[rowIndex][columnIndex] !== 0) return map[rowIndex][columnIndex];
+        if (
+            rowIndex > 0 &&
+            matrix[rowIndex - 1][columnIndex] > matrix[rowIndex][columnIndex] &&
+            search(rowIndex - 1, columnIndex) >= map[rowIndex][columnIndex]
+        ) {
+            map[rowIndex][columnIndex] = map[rowIndex - 1][columnIndex] + 1;
         }
-        count++;
+        if (
+            columnIndex > 0 &&
+            matrix[rowIndex][columnIndex - 1] > matrix[rowIndex][columnIndex] &&
+            search(rowIndex, columnIndex - 1) >= map[rowIndex][columnIndex]
+        ) {
+            map[rowIndex][columnIndex] = map[rowIndex][columnIndex - 1] + 1;
+        }
+        if (
+            rowIndex < matrix.length - 1 &&
+            matrix[rowIndex + 1][columnIndex] > matrix[rowIndex][columnIndex] &&
+            search(rowIndex + 1,columnIndex) >= map[rowIndex][columnIndex]
+        ) {
+            map[rowIndex][columnIndex] = map[rowIndex + 1][columnIndex] + 1;
+        }
+        if (
+            columnIndex < matrix[rowIndex].length - 1 &&
+            matrix[rowIndex][columnIndex + 1] > matrix[rowIndex][columnIndex] &&
+            search(rowIndex, columnIndex + 1) >= map[rowIndex][columnIndex]
+        ) {
+            map[rowIndex][columnIndex] = map[rowIndex][columnIndex + 1] + 1;
+        }
+        return map[rowIndex][columnIndex];
+    }
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            max = Math.max(max, search(i, j));
+        }
     }
     return max + 1;
 };
