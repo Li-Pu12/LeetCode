@@ -6,7 +6,7 @@ LeetCode Practice
 
 -   [46 全排列](https://leetcode-cn.com/problems/permutations/)
 -   [60 第k个排列](https://leetcode-cn.com/problems/permutation-sequence/)
-
+-   [1137 第 N 个泰波那契数](https://leetcode-cn.com/problems/n-th-tribonacci-number/)
 ## 数据结构
 
 ### 字符串
