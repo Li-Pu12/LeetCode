@@ -13,6 +13,10 @@ LeetCode Practice
 
 -   [680 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii)
 
+### 哈希表
+
+-   [599 两个列表的最小索引总和](https://leetcode-cn.com/problems/minimum-index-sum-of-two-lists/)
+
 ## 搜索和排序算法
 
 ### 二分查找
